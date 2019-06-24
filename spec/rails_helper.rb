@@ -18,6 +18,7 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 RSpec.configure do |config|
   config.include RequestSpecHelper, type: :request
+  config.include TokenAuthHeadersSpecHelper, type: :request
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
