@@ -1,5 +1,5 @@
 module RequestSpecHelper
-  #include Warden::Test::Helpers
+  include Warden::Test::Helpers
 
   def json_body
     @json_body ||= JSON.parse(response.body, symbolize_names: true)
