@@ -3,7 +3,7 @@ class CreateBankTransfers < ActiveRecord::Migration[5.2]
     create_table :bank_transfers do |t|
       t.integer :source_account_id
       t.integer :destination_account_id
-      t.float :amount
+      t.float :amount, default: 0
 
       t.timestamps
     end

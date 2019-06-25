@@ -6,6 +6,7 @@ Rails.application.routes.draw do
           registrations:  'api/v1/registrations',
         }
       resources :accounts, only: :create
+      resources :bank_transfers, only: :create
     end
   end
 end
