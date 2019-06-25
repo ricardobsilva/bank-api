@@ -50,6 +50,20 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
+
+      it 'return errors object' do
+        destination_account = create(:account)
+        source_account = create(:account)
+
+        invalid_bank_transfer_params = attributes_for(:bank_transfer,
+                                                      amount: nil,
+                                                      source_account_id: source_account.id,
+                                                      destination_account_id: destination_account.id)
+
+        post '/api/v1/bank_transfers', params: { bank_transfer: invalid_bank_transfer_params}
+
+        expect(json_body).to include(:errors)
+      end
     end
 
     context 'when the original account do not have sufficient bank balance' do
