@@ -5,7 +5,7 @@ This is a simple API project to learn and practice skills
 
 ### Documentation
 
-All the endpoints are documented [here](:https://bankapi12.docs.apiary.io/#)
+All the endpoints are documented [here](https://bankapi12.docs.apiary.io/#)
 
 
 ## Installing
