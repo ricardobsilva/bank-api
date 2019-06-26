@@ -1,5 +1,6 @@
 class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsController
-
+  skip_before_action :authenticate_api_v1_user!
+  
   def render_create_success
     render json: @resource,
            serializer: Api::V1::Registrations::UserSerializer,

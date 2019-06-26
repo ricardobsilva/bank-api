@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2019_06_25_025023) do
   create_table "accounts", force: :cascade do |t|
     t.string "account_number"
     t.string "agency"
-    t.integer "bank"
+    t.integer "bank", default: 0
     t.float "total_amount", default: 0.0
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 2019_06_25_025023) do
   create_table "bank_transfers", force: :cascade do |t|
     t.integer "source_account_id"
     t.integer "destination_account_id"
-    t.float "amount"
+    t.float "amount", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -46,6 +46,11 @@ ActiveRecord::Schema.define(version: 2019_06_25_025023) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
+    t.integer "sign_in_count", default: 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.string "name"
     t.string "nickname"
     t.string "image"

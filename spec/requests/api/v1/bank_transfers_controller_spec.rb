@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::BankTransfersController, type: :request do
+  let(:headers){
+    user = create(:user)
+    headers = get_headers({ email: user.email, password: user.password })
+  }
+
   describe 'POST #create' do
     context 'when pass valid attributes' do
       it 'return 201 status code' do
@@ -12,7 +17,7 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
                                               source_account_id: source_account.id,
                                               destination_account_id: destination_account.id)
 
-        post '/api/v1/bank_transfers', params: { bank_transfer: bank_transfer_params}
+        post '/api/v1/bank_transfers', params: { bank_transfer: bank_transfer_params}, headers: headers
 
         expect(response).to have_http_status(:created)
       end
@@ -26,7 +31,7 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
                                               source_account_id: source_account.id,
                                               destination_account_id: destination_account.id)
 
-        post '/api/v1/bank_transfers', params: { bank_transfer: bank_transfer_params}
+        post '/api/v1/bank_transfers', params: { bank_transfer: bank_transfer_params}, headers: headers
 
         expect(json_body).to include(:bank_transfer)
         expect(json_body[:bank_transfer]).to include(:source_account_number)
@@ -46,7 +51,7 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
                                                       source_account_id: source_account.id,
                                                       destination_account_id: destination_account.id)
 
-        post '/api/v1/bank_transfers', params: { bank_transfer: invalid_bank_transfer_params}
+        post '/api/v1/bank_transfers', params: { bank_transfer: invalid_bank_transfer_params}, headers: headers
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -60,7 +65,7 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
                                                       source_account_id: source_account.id,
                                                       destination_account_id: destination_account.id)
 
-        post '/api/v1/bank_transfers', params: { bank_transfer: invalid_bank_transfer_params}
+        post '/api/v1/bank_transfers', params: { bank_transfer: invalid_bank_transfer_params}, headers: headers
 
         expect(json_body).to include(:errors)
       end
@@ -76,7 +81,7 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
                                               source_account_id: source_account.id,
                                               destination_account_id: destination_account.id)
 
-        post '/api/v1/bank_transfers', params: { bank_transfer: bank_transfer_params}
+        post '/api/v1/bank_transfers', params: { bank_transfer: bank_transfer_params}, headers: headers
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -89,7 +94,7 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
         account = create(:account)
         bank_transfer = create_list(:bank_transfer, 3, source_account_id: account.id)
 
-        get "/api/v1/bank_transfers/check_account_bank_balance/#{account.id}"
+        get "/api/v1/bank_transfers/check_account_bank_balance/#{account.id}", headers: headers
 
         expect(response).to have_http_status(:ok)
       end
@@ -98,7 +103,7 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
         account = create(:account)
         bank_transfer = create_list(:bank_transfer, 3, source_account_id: account.id)
 
-        get "/api/v1/bank_transfers/check_account_bank_balance/#{account.id}"
+        get "/api/v1/bank_transfers/check_account_bank_balance/#{account.id}", headers: headers
 
         expect(json_body).to include(:account)
         expect(json_body[:account]).to include(:account_number)
@@ -112,7 +117,7 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
         bank_transfer = create_list(:bank_transfer, 3, source_account_id: account.id)
         invalid_account_id = account.id + 1
 
-        get "/api/v1/bank_transfers/check_account_bank_balance/#{invalid_account_id}"
+        get "/api/v1/bank_transfers/check_account_bank_balance/#{invalid_account_id}", headers: headers
 
         expect(response).to have_http_status(:not_found)
       end
@@ -122,7 +127,7 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
         bank_transfer = create_list(:bank_transfer, 3, source_account_id: account.id)
         invalid_account_id = account.id + 1
 
-        get "/api/v1/bank_transfers/check_account_bank_balance/#{invalid_account_id}"
+        get "/api/v1/bank_transfers/check_account_bank_balance/#{invalid_account_id}", headers: headers
 
         expect(json_body).to include(:message)
         expect(json_body[:message]).to include('account not found')

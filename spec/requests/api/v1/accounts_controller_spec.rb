@@ -1,13 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::AccountsController, type: :request do
+  let(:headers){
+    user = create(:user)
+    headers = get_headers({ email: user.email, password: user.password })
+  }
+
   describe 'POST #create' do
     context 'when pass valid attributes' do
       it 'return 201 status code' do
         user = create(:user)
         account_params = attributes_for(:account, user_id: user.id)
 
-        post '/api/v1/accounts', params: { account: account_params}
+        post '/api/v1/accounts', params: { account: account_params}, headers: headers
 
         expect(response).to have_http_status(:created)
       end
@@ -16,7 +21,7 @@ RSpec.describe Api::V1::AccountsController, type: :request do
         user = create(:user)
         account_params = attributes_for(:account, user_id: user.id)
 
-        post '/api/v1/accounts', params: { account: account_params}
+        post '/api/v1/accounts', params: { account: account_params}, headers: headers
 
         expect(json_body).to include(:account)
         expect(json_body[:account]).to include(:account_number)
@@ -32,7 +37,7 @@ RSpec.describe Api::V1::AccountsController, type: :request do
         user = create(:user)
         account_params = attributes_for(:account, account_number: nil, user_id: user.id)
 
-        post '/api/v1/accounts', params: { account: account_params}
+        post '/api/v1/accounts', params: { account: account_params}, headers: headers
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -41,7 +46,7 @@ RSpec.describe Api::V1::AccountsController, type: :request do
         user = create(:user)
         account_params = attributes_for(:account, account_number: nil, user_id: user.id)
 
-        post '/api/v1/accounts', params: { account: account_params}
+        post '/api/v1/accounts', params: { account: account_params}, headers: headers
 
         expect(json_body).to include(:errors)
       end

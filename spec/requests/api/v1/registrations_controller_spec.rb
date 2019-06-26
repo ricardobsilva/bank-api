@@ -1,12 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::RegistrationsController, type: :request do
+  let(:headers){
+    user = create(:user)
+    headers = get_headers({ email: user.email, password: user.password })
+  }
+
   describe 'POST #registrations' do
     context 'when pass valid attributes' do
       it 'return 201 status code' do
         user_params = attributes_for(:user)
 
-        post '/api/v1/auth', params: { user: user_params}
+        post '/api/v1/auth', params: { user: user_params}, headers: headers
 
         expect(response).to have_http_status(:created)
       end
@@ -14,7 +19,7 @@ RSpec.describe Api::V1::RegistrationsController, type: :request do
       it 'return object user with attributes' do
         user_params = attributes_for(:user)
 
-        post '/api/v1/auth', params: { user: user_params}
+        post '/api/v1/auth', params: { user: user_params}, headers: headers
 
         expect(json_body).to include(:user)
         expect(json_body[:user]).to include(:email)
@@ -27,7 +32,7 @@ RSpec.describe Api::V1::RegistrationsController, type: :request do
       it 'return 422 status code' do
         user_params = attributes_for(:user, email: nil)
 
-        post '/api/v1/auth', params: { user: user_params}
+        post '/api/v1/auth', params: { user: user_params}, headers: headers
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -35,7 +40,7 @@ RSpec.describe Api::V1::RegistrationsController, type: :request do
       it 'return object errors' do
         user_params = attributes_for(:user, email: nil)
 
-        post '/api/v1/auth', params: { user: user_params}
+        post '/api/v1/auth', params: { user: user_params}, headers: headers
 
         expect(json_body).to include(:errors)
       end
