@@ -17,6 +17,18 @@ class Api::V1::BankTransfersController < ApplicationController
     command_create.call
   end
 
+  def check_bank_balance
+    command_check_balance = Api::V1::BankTransfers::CheckBalance.new(params[:account_id])
+    command_check_balance.on(:success){|account|
+      render json: account, status: :ok, root: :account,
+             serializer: Api::V1::BankTransfers::CheckBalanceSerializer
+    }
+    command_check_balance.on(:account_not_found){
+      render json: {message: 'account not found'}, status: :not_found
+    }
+    command_check_balance.call
+  end
+
   private
 
   def bank_transfer_params

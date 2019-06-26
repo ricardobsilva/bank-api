@@ -82,4 +82,51 @@ RSpec.describe Api::V1::BankTransfersController, type: :request do
       end
     end
   end
+
+  describe 'GET #check_bank_balance' do
+    context 'when find the account id' do
+      it 'return 200 https status code' do
+        account = create(:account)
+        bank_transfer = create_list(:bank_transfer, 3, source_account_id: account.id)
+
+        get "/api/v1/bank_transfers/check_account_bank_balance/#{account.id}"
+
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'return account with attributes' do
+        account = create(:account)
+        bank_transfer = create_list(:bank_transfer, 3, source_account_id: account.id)
+
+        get "/api/v1/bank_transfers/check_account_bank_balance/#{account.id}"
+
+        expect(json_body).to include(:account)
+        expect(json_body[:account]).to include(:account_number)
+        expect(json_body[:account]).to include(:total_amount)
+      end
+    end
+
+    context 'when do not find the account id' do
+      it 'return 404 https status code' do
+        account = create(:account)
+        bank_transfer = create_list(:bank_transfer, 3, source_account_id: account.id)
+        invalid_account_id = account.id + 1
+
+        get "/api/v1/bank_transfers/check_account_bank_balance/#{invalid_account_id}"
+
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it 'return a message informing that the account was not found' do
+        account = create(:account)
+        bank_transfer = create_list(:bank_transfer, 3, source_account_id: account.id)
+        invalid_account_id = account.id + 1
+
+        get "/api/v1/bank_transfers/check_account_bank_balance/#{invalid_account_id}"
+
+        expect(json_body).to include(:message)
+        expect(json_body[:message]).to include('account not found')
+      end
+    end
+  end
 end

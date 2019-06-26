@@ -7,6 +7,11 @@ Rails.application.routes.draw do
         }
       resources :accounts, only: :create
       resources :bank_transfers, only: :create
+      resources :bank_transfers, only: :create do
+        collection do
+          get "/check_account_bank_balance/:account_id", action: :check_bank_balance
+        end
+      end
     end
   end
 end
