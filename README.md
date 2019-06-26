@@ -1,24 +1,31 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### About
+This is a simple API project to learn and practice skills
 
-Things you may want to cover:
+### Documentation
 
-* Ruby version
+All the endpoints are documented [here](:https://bankapi12.docs.apiary.io/#)
 
-* System dependencies
 
-* Configuration
+## Installing
 
-* Database creation
+1. Clone the repo
+2. `bundle install`
+3. `rails db:create db:migrate` to create and migrate database
 
-* Database initialization
+## Running application
 
-* How to run the test suite
+To run the application, run the following command:
 
-* Services (job queues, cache servers, search engines, etc.)
+* `rails s`
 
-* Deployment instructions
 
-* ...
+## Contributing
+
+1. Fork the Project
+2. Create a Topic Branch
+3. Write your code (please, don't forget the tests)
+4. Commit and Push your code
+5. Write Documentation
+6. Make a Pull Request
