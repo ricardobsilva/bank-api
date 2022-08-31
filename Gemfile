@@ -20,7 +20,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'rack-cors'
 gem 'devise'
 gem 'devise_token_auth', '1.1.0'
-gem 'omniauth', '~> 1.3', '>= 1.3.1'
+gem 'omniauth', '~> 1.9'
 
 gem 'cpf_cnpj', '~> 0.2.1'
 
